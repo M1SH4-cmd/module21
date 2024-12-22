@@ -8,21 +8,21 @@ struct character {
 };
 
 
-void take_damage (char* name, int* health, int* armor, int damage) {
-    cout << name << " took damage: -" << damage << endl;
-    *armor -= damage;
-    if (*armor < 0) {
-        *health += *armor;
-        *armor = 0;
+void take_damage (character* person, int damage) {
+    cout << person -> name << " took damage: -" << damage << endl; 
+    person -> armor -= damage;
+    if (person -> armor < 0) {
+        person -> health += person -> armor;
+        person -> armor = 0;
     }
 }
 
 int main()
 {
-    char* names[10];
-    int health[10];
-    int armor [10];
+    character person = {"PMC Bear ops", .health = 100};
+    person.armor = 20;
+    take_damage(&person, 30);
 
+    cout << "Health: " << person.health << " Armor: " << person.armor << endl;
     
-
 }
