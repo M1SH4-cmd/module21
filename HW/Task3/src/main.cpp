@@ -2,36 +2,56 @@
 #include <cmath>
 using namespace std;
 
-void add(double x1, double y1, double x2, double y2)
+struct vector {
+    double x;
+    double y;
+};
+
+
+void add(vector vec1, vector vec2)
 {
-    cout << "Vector (" << x1 + x2 << ", " << y1 + y2 << ")" << endl;
+    vector vec3;
+    vec3.x = vec1.x + vec2.x;
+    vec3.y = vec1.x + vec2.y;
+    return vec3;
 }
 
-void subtract(double x1, double y1, double x2, double y2)
+void subtract(vector vec1, vector vec2)
 {
-    cout << "Vector (" << x1 - x2 << ", " << y1 - y2 << ")" << endl;
+    vector vec3;
+    vec3.x = vec1.x - vec2.x;
+    vec3.y = vec1.x - vec2.y;
+    return vec3;
 }
 
-void scale(double x1, double y1, double scalar)
+vector scale(vector vec1, double scalar)
 {
-    cout << "Vector (" << x1 * scalar << ", " << y1 * scalar << ")" << endl;
+    vector vec2;
+    vec2.x = vec1.x * scalar;
+    vec2.y = vec1.x * scalar;
+    return vec2;
 }
 
-void length(double x1, double y1)
+double length(vector vec1)
 {
-    cout << "Length: " << sqrt(x1 * x1 + y1 * y1) << endl;
+    return sqrt((vec1.x * vec1.x) + (vec1.y * vec1.y));
 }
 
-void normalize(double x1, double y1)
+vector normalize(vector vec1)
 {
-    double length = sqrt(x1 * x1 + y1 * y1);
+    double length = sqrt((vec1.x * vec1.x) + (vec1.y * vec1.y));
     if (length == 0) {
         cout << "Cannot normalize the zero vector" << endl;
         return;
     }
-    double normalizedX = x1 / length;
-    double normalizedY = y1 / length;
-    cout << "Normalized Vector (" << normalizedX << ", " << normalizedY << ")" << endl;
+    vector vec3;
+    double normalizedX = vec1.x / length;
+    double normalizedY = vec1.y / length;
+    return vec3(normalizedX, normalizedY);
+}
+
+void printVector(vector vec1) {
+    cout << "(" << vec1.x << ", " << vec1.y << ")" << endl;
 }
 
 int main()
@@ -43,36 +63,38 @@ int main()
     cin >> op;
 
     if (op == "add") {
-        double x1, y1, x2, y2;
+        vector vec1, vec2;
         cout << "Enter coordinates for vector 1: ";
-        cin >> x1 >> y1;
+        cin >> vec1.x >> vec1.y;
         cout << "Enter coordinates for vector 2: ";
-        cin >> x2 >> y2;
-        add(x1, y1, x2, y2);
+        cin >> vec2.x >> vec2.y;
+        add(vec1, vec2);
     } else if (op == "subtract") {
-        double x1, y1, x2, y2;
+        vector vec1, vec2;
         cout << "Enter coordinates for vector 1: ";
-        cin >> x1 >> y1;
+        cin >> vec1.x >> vec1.y;
         cout << "Enter coordinates for vector 2: ";
-        cin >> x2 >> y2;
-        subtract(x1, y1, x2, y2);
+        cin >> vec2.x >> vec2.y;
+        subtract(vec1, vec2);
     } else if (op == "scale") {
-        double x1, y1, scalar;
+        double scalar;
+        vector vec1;
         cout << "Enter coordinates for vector: ";
-        cin >> x1 >> y1;
+        cin >> vec1.x >> vec1.y;
         cout << "Enter scalar: ";
         cin >> scalar;
-        scale(x1, y1, scalar);
+        scale(vec1, scalar);
     } else if (op == "length") {
+        vector vec1;
         cout << "Enter coordinates for vector: ";
-        cin >> x >> y;
-        length(x, y);
+        cin >> vec1.x >> vec1.y;
+        length(vec1);
     } else if (op == "normalize") {
+        vector vec1;
         cout << "Enter coordinates for vector: ";
-        cin >> x >> y;
-        normalize(x, y);
+        cin >> vec1.x >> vec1.y;
+        normalize(vec1);
     } else {
         cout << "Invalid operation" << endl;
     }
-
 }
