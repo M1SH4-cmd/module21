@@ -1,16 +1,31 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cstdio>
 using namespace std;
 
-bool checkTime (string time)
+struct employee {
+    string name;
+    double cash;
+    string payday;
+    time t;
+
+    void printEmployee(){
+        printf("%s %s %s", name, cash, payday);
+    }
+};
+
+struct time{
+    int day;
+    int month;
+    int year;
+};
+
+bool checkTime (time t)
 {
-    if ((time[2] != ':' || time[5] != ':') || (time.length() != 10)) return false;
-    int day = stoi(time.substr(0, 2));
-    int month = stoi(time.substr(3, 2));
-    int year = stoi(time.substr(6, 4));
-    if (day < 0 || day > 31) return false;
-    if (month < 1 || month > 12) return false;
+    if (t.day < 0 || t.day > 31) return false;
+    if (t.month < 1 || t.month > 12) return false;
+    if (t.year < 2024 || t.year > 9999) return false;
 }
 
 int main()
@@ -21,36 +36,38 @@ int main()
 
     if (command == "add") {
         ofstream file("..\\list.txt", ios::app);
-        string lineToAdd = "";
-        string buffer;
         cout << "Type EXIT to exit" << endl;
 
         while(true) {
+            employee man;
             cout << "\nEnter your employees first and second names:\t";
-            getline(cin, buffer);
-            if (buffer == "EXIT") return 0;
-            lineToAdd += buffer;
-            cout << "\nEnter cash ammount:\t";
-            getline(cin, buffer);
-            if (buffer == "EXIT") return 0;
-            lineToAdd += buffer;
-            cout << "\nEnter time of payment (DD:MM:YYYY):\t";
-            getline(cin, buffer);
-            if (!checkTime(buffer)) {
+            getline(cin, man.name);
+            if (man.name == "EXIT") return 0;
+            file << man.name;
+
+            cout << "\nEnter time of payment (DD MM YYYY):\t";
+            time t;
+            cin >> t.day >> t.month >> t.year;
+            if (!checkTime(t)) {
                 cout << "Invalid time" << endl;
                 continue;
             }
-            if (buffer == "EXIT") return 0;
-            lineToAdd += buffer;
-            file << lineToAdd << endl;
+            file << t;
+
+            cout << "\nEnter cash ammount:\t";
+            cin >> man.cash;
+            file << man.cash << endl;
         }
     file.close();
     } else if (command == "list"){
+        vector<employee> employees;
         ifstream file("..\\list.txt");
-        while(!file.eof()){
-            string employee;
-            getline(file, employee, '\n');
-            cout << employee;
+        for(int i = 0; !file.eof(); i++){
+            employee worker;
+            file >> worker.name;
+            file >> worker.time;
+            file >> worker.cash;
+            employees[i].push_back(worker);
         }
         file.close();
     }
