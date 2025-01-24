@@ -11,7 +11,7 @@ struct employee {
     time t;
 
     void printEmployee(){
-        printf("%s %s %s", name, cash, payday);
+        printf("%s %s %s\n", name, cash, payday);
     }
 };
 
@@ -60,14 +60,13 @@ int main()
         }
     file.close();
     } else if (command == "list"){
-        vector<employee> employees;
         ifstream file("..\\list.txt");
         for(int i = 0; !file.eof(); i++){
             employee worker;
             file >> worker.name;
             file >> worker.time;
             file >> worker.cash;
-            employees[i].push_back(worker);
+            worker.printEmployee();
         }
         file.close();
     }
